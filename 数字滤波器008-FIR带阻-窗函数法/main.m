@@ -1,4 +1,4 @@
-%% FIR数字带通滤波器
+%% FIR数字带阻滤波器
 % 习题7.4
 % Wp1 = 0.35π 
 % Wp2 = 0.8π
@@ -9,7 +9,7 @@
 Wp = [0.35, 0.8] * pi;      % 通带截止角频率
 Wst = [0.5, 0.65] * pi;     % 阻带截止角频率
 
-tr_width = min(abs(Wp - Wst));           % 过渡带宽
+tr_width = min(abs(Wp - Wst));           % 过渡带宽 Δω
 
 % As = 75dB 采用凯泽Kaiser窗
 % beta = 7.865 As = 80
@@ -32,6 +32,8 @@ window = (kaiser(N, beta));              % 获得窗函数
 nm =n- m + eps;                     % nm = n - τ
 hd = 1:N;                           % 理想数字滤波器的单位冲激响应
 
+% 理想数字滤波器的单位冲激响应
+% 公式来自课本7.3.2 带阻
 for index = 1:N
     if nm(index) == double(0)
         hd(index) = 1 - (wc(1)-wc(2))/pi;
@@ -41,7 +43,7 @@ for index = 1:N
 end
 
 hn = hd' .* window;                 % 加窗
-[H,W] = freqz(hn,1,300);            % 获得系统函数的单位冲激响应
+[H,W] = freqz(hn,1,300);            % 获得系统的频率响应
 
 amplitude = abs(H);                 % 取幅度
 phase = angle(H);                   % 取相位

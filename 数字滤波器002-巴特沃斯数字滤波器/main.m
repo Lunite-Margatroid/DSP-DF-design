@@ -19,6 +19,7 @@ Ws = 2 * pi * fs;
 w = linspace(0,10000,200);
 w = w * 2 *pi;
 
+%% 先设计模拟滤波器
 % 计算巴特沃思模拟滤波器参数
 % N 阶数
 % Wc 3dB衰减频率
@@ -27,11 +28,13 @@ w = w * 2 *pi;
 % 计算滤波器系统函数
 % b 系统函数分子
 % a 系统函数分母
+% bandpass 带通
+% s 模拟滤波器
 [b,a] = butter(N, Wc, 'bandpass', 's');
 
-% H 模拟滤波器的系统函数
-% W 模拟角频率
-[H, W] = freqs(b, a,w);
+% H 模拟滤波器的复频域响应
+% W 对应模拟角频率
+[H, W] = freqs(b, a, w);
 
 % 幅度
 amplitude = abs(H);
@@ -45,17 +48,18 @@ db = 20 * log10(amplitude / max(amplitude));
 % 转换为Hz
 f = W / (2 * pi);
 
+figure;
 % 绘制幅度响应图
-subplot(3,2,1);
+subplot(2,1,1);
 plot(f, db);
-title('巴特沃斯模拟滤波器-单位冲激响应（幅度）');
+title('巴特沃斯模拟滤波器-幅频特性');
 
 % 绘制相位响应图
-subplot(3,2,2);
+subplot(2,1,2);
 plot(f, phase);
-title('巴特沃斯模拟滤波器-单位冲击响应（相位）');
+title('巴特沃斯模拟滤波器-相频特性');
 
-%% 数字滤波器 冲激响应不变法
+%% 转为数字滤波器 冲激响应不变法
 Fs = 25000; % 采样频率
 [B, A] = impinvar(b, a, Fs);
 [H, W] = freqz(B, A);
@@ -66,16 +70,26 @@ phase = angle(H);
 db = 20 * log10( (amplitude + eps) / max(amplitude));
 f= W * Fs / (2* pi);
 
+% 计算单位冲激响应
+x_n = 0:99;                % 绘图x轴
+x = [1 zeros(1,99)];       % 单位冲激序列
+y = filter(B, A, x);        % 滤波
+
+figure;
 % 绘制幅度响应图
-subplot(3,2,3);
+subplot(2,2,1);
 plot(f, db);
 title('冲激响应不变法-巴特沃斯数字滤波器-幅频特性');
 
 % 绘制相位响应图
-subplot(3,2,4);
+subplot(2,2,2);
 plot(f, phase);
 title('冲激响应不变法-巴特沃斯数字滤波器-相频特性');
 
+% 绘制单位冲击响应
+subplot(2,2,3);
+stem(x_n,y);
+title('冲激响应不变法-巴特沃斯数字滤波器-单位冲激响应')
 %% 双线性映射法
 wp = 2 * pi * fp/Fs;
 ws = 2 * pi * fs/Fs;
@@ -95,12 +109,23 @@ phase = angle(H);
 db = 20 * log10( (amplitude + eps) / max(amplitude));
 f= W * Fs / (2* pi);
 
+% 计算单位冲激响应
+y = filter(B, A, x);        % 滤波
+
+figure;
 % 绘制幅度响应图
-subplot(3,2,5);
+subplot(2,2,1);
 plot(f, db);
 title('双线性映射法-巴特沃斯数字滤波器-幅频特性');
 
 % 绘制相位响应图
-subplot(3,2,6);
+subplot(2,2,2);
 plot(f, phase);
 title('双线性映射法-巴特沃斯数字滤波器-相频特性');
+
+% 绘制单位冲击响应
+subplot(2,2,3);
+stem(x_n,y);
+title('双线性映射法-巴特沃斯数字滤波器-单位冲激响应')
+
+% 系统函数可由向量B和A得到

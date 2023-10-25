@@ -8,7 +8,7 @@ Wst = 0.4 * pi;     % 阻带截止角频率
 
 Fs = 10000;          % 采样频率
 
-tr_width = abs(Wp - Wst);           % 过渡带宽
+tr_width = abs(Wp - Wst);           % 过渡带宽 Δω
 
 % As = 45dB 采用海明窗
 % tr_width = 6.6pi/N => N = 6.6pi / tr_width
@@ -28,7 +28,8 @@ window = (hamming(N));              % 获得窗函数
 nm =n- m + eps;                     % nm = n - τ
 hd = 1:N;                           % 理想数字滤波器的单位冲激响应
 
-% 7.3.2
+% 理想数字滤波器的单位冲激响应
+% 公式来自课本7.3.2 低通
 for index = 1:N
     if nm(index) == double(0)
         hd(index) = wc / pi;
@@ -38,7 +39,7 @@ for index = 1:N
 end
 
 hn = hd' .* window;                 % 加窗
-[H,W] = freqz(hn,1,300);            % 获得系统函数的单位冲激响应
+[H,W] = freqz(hn,1,300);            % 获得系统的频率响应
 
 amplitude = abs(H);                 % 取幅度
 phase = angle(H);                   % 取相位

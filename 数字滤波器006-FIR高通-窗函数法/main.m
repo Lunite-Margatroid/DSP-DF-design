@@ -8,7 +8,7 @@ Wst = 0.5 * pi;     % 阻带截止角频率
 
 Fs = 10000;          % 采样频率
 
-tr_width = abs(Wp - Wst);           % 过渡带宽
+tr_width = abs(Wp - Wst);           % 过渡带宽 Δω
 
 % As = 45dB 采用布莱克窗
 % tr_width = 11pi/N => N = 11pi / tr_width
@@ -29,6 +29,9 @@ window = (blackman(N));              % 获得窗函数
 nm =n- m + eps;                     % nm = n - τ
 hd = 1:N;                           % 理想数字滤波器的单位冲激响应
 
+% 理想数字滤波器的单位冲激响应
+% 公式来自课本7.3.2 高通
+% 课本上的公式貌似有问题？
 for index = 1:N
     if nm(index) == double(0)
         hd(index) = 1 - wc / pi;
@@ -38,7 +41,7 @@ for index = 1:N
 end
 
 hn = hd' .* window;                 % 加窗
-[H,W] = freqz(hn,1,300);            % 获得系统函数的单位冲激响应
+[H,W] = freqz(hn,1,300);            % 获得系统的频率响应
 
 amplitude = abs(H);                 % 取幅度
 phase = angle(H);                   % 取相位
