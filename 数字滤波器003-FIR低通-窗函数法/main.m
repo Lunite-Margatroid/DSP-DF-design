@@ -28,6 +28,7 @@ window = (hamming(N));              % 获得窗函数
 nm =n- m + eps;                     % nm = n - τ
 hd = 1:N;                           % 理想数字滤波器的单位冲激响应
 
+% 7.3.2
 for index = 1:N
     if nm(index) == double(0)
         hd(index) = wc / pi;
