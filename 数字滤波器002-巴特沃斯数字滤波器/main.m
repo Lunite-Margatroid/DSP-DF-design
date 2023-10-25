@@ -82,6 +82,10 @@ ws = 2 * pi * fs/Fs;
 Wp = (2 * Fs) * tan(wp/2);
 Ws = (2 * Fs) * tan(ws/2);
 
+[N, Wc] = buttord(Wp, Ws, Rp, Rs, 's');
+[b,a] = butter(N, Wc, 'bandpass', 's');
+
+
 [B,A] = bilinear(b,a,Fs);
 [H,W] = freqz(B,A);
 

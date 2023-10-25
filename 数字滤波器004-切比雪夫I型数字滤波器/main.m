@@ -68,6 +68,9 @@ ws = 2 * pi * fs/Fs;
 Wp = (2 * Fs) * tan(wp/2);
 Ws = (2 * Fs) * tan(ws/2);
 
+[N , Wc] = cheb1ord(Wp, Ws, Rp, Rs, 's');
+[b, a] = cheby1(N, Rp, Wp, 'bandpass', 's');
+
 [B,A] = bilinear(b,a,Fs);
 [H,W] = freqz(B,A);
 
