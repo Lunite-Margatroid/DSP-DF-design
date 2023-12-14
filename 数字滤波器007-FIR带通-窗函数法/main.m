@@ -54,8 +54,15 @@ f = W/pi;
 
 subplot(1,2,1);
 plot(f, db);
-title("窗函数法-FIR低通数字滤波器-幅频响应");
+xlabel('w/Π');
+ylabel('-A(f)/dB');
+title("窗函数法-FIR带通数字滤波器-幅频响应");
 
 subplot(1,2,2)
 plot(f, phase);
-title("窗函数法-FIR低通数字滤波器-相频响应");
+xlabel('w/Π');
+ylabel('φ/rad');
+title("窗函数法-FIR带通数字滤波器-相频响应");
+for i = 1:numel(hn)
+    fprintf("%g, ",hn(i));
+end

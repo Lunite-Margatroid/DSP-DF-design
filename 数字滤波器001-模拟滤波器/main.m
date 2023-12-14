@@ -9,7 +9,7 @@ fs2 = 8500;     % 下阻带截止频率和上阻带截止频率
 fp = [5000, 7000];  % 通带截止频率
 fs = [3500, 8500];  % 阻带截止频率
 
-Rp = 0.4;       % 通带衰减
+Rp = 0.5;       % 通带衰减
 Rs = 45;        % 阻带衰减(As)
 
 % 转换为模拟角频率
@@ -61,6 +61,19 @@ subplot(3,2,2);
 plot(f, phase);
 title('巴特沃斯-相频特性');
 
+disp("-------巴特沃斯-----------");
+fprintf("阶数N = %d\n",N);
+fprintf("分子:\n");
+for i = 1:numel(b)
+   fprintf("%g * ",b(i));
+   fprintf("s^%d + ",numel(b)-i);
+end
+fprintf("\n分母:\n")
+for i = 1:numel(a)
+   fprintf("%g * ",a(i));
+   fprintf("s^%d + ",numel(a)-i);
+end
+fprintf("\n");
 %% 切比雪夫I型
 [N , Wc] = cheb1ord(Wp, Ws, Rp, Rs, 's');
 [b, a] = cheby1(N, Rp, Wp, 'bandpass', 's'); % 参数为通带最大衰减 通带截止频率
@@ -83,6 +96,19 @@ subplot(3,2,4);
 plot(f, phase);
 title('切比雪夫I型-相频特性');
 
+disp("-------切比雪夫I-----------");
+fprintf("阶数N = %d\n",N);
+fprintf("分子:\n");
+for i = 1:numel(b)
+   fprintf("%g * ",b(i));
+   fprintf("s^%d + ",numel(b)-i);
+end
+fprintf("\n分母:\n")
+for i = 1:numel(a)
+   fprintf("%g * ",a(i));
+   fprintf("s^%d + ",numel(a)-i);
+end
+fprintf("\n");
 %% 切比雪夫II型
 [N , Wc] = cheb2ord(Wp, Ws, Rp, Rs, 's');
 [b, a] = cheby2(N, Rs, Ws, 'bandpass', 's');
@@ -105,3 +131,16 @@ axis([0 10000 -70 0]);
 subplot(3,2,6);
 plot(f, phase);
 title('切比雪夫II型-相频特性');
+
+disp("-------切比雪夫II-----------");
+fprintf("阶数N = %d\n",N);
+fprintf("分子:\n");
+for i = 1:numel(b)
+   fprintf("%g * ",b(i));
+   fprintf("s^%d + ",numel(b)-i);
+end
+fprintf("\n分母:\n")
+for i = 1:numel(a)
+   fprintf("%g * ",a(i));
+   fprintf("s^%d + ",numel(a)-i);
+end
